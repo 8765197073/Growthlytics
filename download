@@ -1,0 +1,163 @@
+import { motion } from 'motion/react';
+import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const posts = [
+  {
+    title: 'Why First-Party Data is Your Greatest Asset in 2026',
+    excerpt: 'As cookies disappear, brands that own their customer data will win. Here is how to build a collection strategy that actually scales.',
+    date: 'Apr 15, 2026',
+    author: 'Alex Rivera',
+    category: 'Data Strategy',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop'
+  },
+  {
+    title: 'The Rise of AI-Driven Performance Creative',
+    excerpt: 'How we are using automated feedback loops to optimize ad visual performance at scale without losing the human brand touch.',
+    date: 'Apr 10, 2026',
+    author: 'Elena Vance',
+    category: 'AI & Creative',
+    image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop'
+  },
+  {
+    title: '5 Common Automation Mistakes That Kill Conversion',
+    excerpt: 'More automation isnt always better. We break down the top pitfalls we see when brands attempt to automate their funnel too early.',
+    date: 'Apr 02, 2026',
+    author: 'Marcus Thorne',
+    category: 'Automation',
+    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1000&auto=format&fit=crop'
+  },
+  {
+    title: 'Technical SEO: Beyond the Basics',
+    excerpt: 'A deep dive into server-side rendering, schema markup, and Core Web Vitals optimizations that actually impact rankings.',
+    date: 'Mar 28, 2026',
+    author: 'Sarah Chen',
+    category: 'SEO',
+    image: 'https://images.unsplash.com/photo-1454165833767-02a9e59d64a0?q=80&w=1000&auto=format&fit=crop'
+  }
+];
+
+export default function Blog() {
+  return (
+    <div className="bg-background pt-32 pb-20">
+      <div className="max-w-7xl mx-auto px-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mb-24"
+        >
+          <div className="theme-badge mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary"></span>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-primary">Intelligence Stream</span>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight tracking-tighter uppercase">
+            MARKET <span className="text-primary italic">SIGNALS</span><br /> FOR STRATEGIC EDGE.
+          </h1>
+          <div className="relative max-w-md">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/30 w-4 h-4" />
+            <input 
+              type="text" 
+              placeholder="SEARCH PROTOCOLS..." 
+              className="w-full bg-white/5 border border-white/10 rounded-sm py-4 pl-14 pr-6 text-white text-xs font-bold tracking-widest focus:outline-none focus:border-primary transition-colors"
+            />
+          </div>
+        </motion.div>
+
+        {/* Featured Post */}
+        <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.2 }}
+           className="group mb-32 relative overflow-hidden rounded-sm theme-border bg-white/[0.02] flex flex-col lg:flex-row"
+        >
+           <div className="flex-1 overflow-hidden relative">
+              <img 
+                src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200&auto=format&fit=crop" 
+                alt="Featured Post" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute top-8 left-8 flex flex-col items-start gap-4">
+                 <span className="px-3 py-1 bg-primary text-black text-[10px] font-black uppercase tracking-widest">Featured Report</span>
+              </div>
+           </div>
+           <div className="flex-1 p-10 md:p-16 flex flex-col justify-center gap-6">
+              <div className="flex items-center gap-4 text-white/40 text-[10px] font-bold tracking-widest uppercase">
+                 <span>10 min read</span>
+                 <span className="w-8 h-[1px] bg-white/10" />
+                 <span>Apr 20, 2026</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black group-hover:text-primary transition-colors uppercase tracking-tighter leading-none">The Future of Digital Attribution in a Privacy-First World</h2>
+              <p className="text-white/40 text-lg leading-relaxed font-medium">
+                Traditional tracking is dying. We explore the transition to server-side tracking, probabilistic modeling, and why your marketing plan needs to evolve.
+              </p>
+              
+              <Link to="/blog/featured" className="theme-button-primary w-fit pt-3">
+                 Access Report
+              </Link>
+           </div>
+        </motion.div>
+
+        {/* Blog Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24 mb-32">
+          {posts.map((post, i) => (
+            <motion.article
+              key={i}
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="group cursor-pointer"
+            >
+              <div className="aspect-video rounded-sm overflow-hidden mb-8 theme-border relative bg-white/5">
+                 <img 
+                    src={post.image} 
+                    alt={post.title} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                    referrerPolicy="no-referrer"
+                 />
+                 <div className="absolute top-6 left-6 px-4 py-2 bg-black/60 border border-white/10 rounded-sm text-[10px] font-black text-white uppercase tracking-widest">
+                    {post.category}
+                 </div>
+              </div>
+              <div className="space-y-4">
+                 <div className="flex items-center gap-4 text-white/30 text-[10px] uppercase tracking-widest font-black">
+                    <span>{post.date}</span>
+                    <span className="w-1 h-1 bg-primary rounded-full" />
+                    <span>{post.author}</span>
+                 </div>
+                 <h3 className="text-3xl font-black group-hover:text-primary transition-colors leading-none uppercase tracking-tighter">{post.title}</h3>
+                 <p className="text-white/40 leading-relaxed line-clamp-3 font-medium">
+                   {post.excerpt}
+                 </p>
+                 <Link to={`/blog/${i}`} className="theme-button-primary block w-fit pt-3">
+                   Analyze Story
+                 </Link>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        {/* Subscribe */}
+        <section className="border-t border-white/10 pt-32">
+           <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-4xl font-bold mb-6">Stay updated with the latest in growth.</h2>
+              <p className="text-white/40 mb-10">Join 5,000+ marketers and founders receiving our weekly data-driven insights.</p>
+              <form className="flex flex-col sm:flex-row gap-4">
+                 <input 
+                    type="email" 
+                    placeholder="Enter your email address" 
+                    className="flex-grow bg-white/5 border border-white/10 rounded-full py-4 px-6 text-white text-lg focus:outline-none focus:border-green-500 transition-colors"
+                    required
+                 />
+                 <button className="bg-green-500 text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all">
+                    Subscribe
+                 </button>
+              </form>
+              <p className="text-[10px] text-white/20 mt-6 uppercase tracking-widest font-medium">No spam. Only high-signal insights.</p>
+           </div>
+        </section>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,418 @@
+import { motion, useMotionValue, useSpring, useMotionTemplate } from 'motion/react';
+import { ArrowUpRight, BarChart3, TrendingUp, Zap, Clock, User, Target, PieChart as PieChartIcon, LineChart as LineChartIcon, BarChart as BarChartIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+
+const caseStudies = [
+  {
+    company: 'TechScale SaaS',
+    industry: 'B2B Software',
+    result: '+340% MQLs',
+    desc: 'Optimized LinkedIn and Google ad campaigns with advanced audience segmentation and conversion tracking, cutting cost-per-acquisition nearly in half.',
+    tags: ['PPC', 'LinkedIn Ads', 'CRO'],
+    img: 'https://images.unsplash.com/photo-1558403194-611308249627?q=80&w=800&auto=format&fit=crop',
+    chartData: [
+      { name: 'Month 1', value: 400, share: 20 },
+      { name: 'Month 2', value: 300, share: 15 },
+      { name: 'Month 3', value: 600, share: 30 },
+      { name: 'Month 4', value: 200, share: 10 },
+      { name: 'Month 5', value: 500, share: 25 },
+    ]
+  },
+  {
+    company: 'FreshCart',
+    industry: 'E-Commerce',
+    result: '4.8x ROAS',
+    desc: 'Launched automated email nurture sequences and retargeting campaigns that dramatically increased course enrollment rates.',
+    tags: ['Automation', 'Email', 'Retargeting'],
+    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop',
+    chartData: [
+      { name: 'Week 1', value: 200, share: 10 },
+      { name: 'Week 2', value: 400, share: 20 },
+      { name: 'Week 3', value: 800, share: 40 },
+      { name: 'Week 4', value: 300, share: 15 },
+      { name: 'Week 5', value: 300, share: 15 },
+    ]
+  },
+  {
+    company: 'HealthBridge',
+    industry: 'Healthcare',
+    result: '+210% Organic Traffic',
+    desc: 'Built social media brand presence from zero with influencer partnerships, UGC campaigns, and community-driven content strategy.',
+    tags: ['Social Media', 'Influencer', 'Content'],
+    img: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=800&auto=format&fit=crop',
+    chartData: [
+      { name: 'Q1', value: 500, share: 25 },
+      { name: 'Q2', value: 700, share: 35 },
+      { name: 'Q3', value: 400, share: 20 },
+      { name: 'Q4', value: 400, share: 20 },
+    ]
+  },
+  {
+    company: 'FinEdge Capital',
+    industry: 'Financial Services',
+    result: '-45% CPA',
+    desc: 'Optimized LinkedIn and Google ad campaigns with advanced audience segmentation and conversion tracking, cutting cost-per-acquisition nearly in half.',
+    tags: ['PPC', 'LinkedIn Ads', 'CRO'],
+    img: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=800&auto=format&fit=crop',
+    chartData: [
+      { name: 'Wk 1', value: 900, share: 45 },
+      { name: 'Wk 2', value: 400, share: 20 },
+      { name: 'Wk 3', value: 300, share: 15 },
+      { name: 'Wk 4', value: 400, share: 20 },
+    ]
+  },
+  {
+    company: 'EduSpark',
+    industry: 'EdTech',
+    result: '+520% Enrollments',
+    desc: 'Launched automated email nurture sequences and retargeting campaigns that dramatically increased course enrollment rates.',
+    tags: ['Automation', 'Email', 'Retargeting'],
+    img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop',
+    chartData: [
+      { name: 'M1', value: 100, share: 10 },
+      { name: 'M2', value: 200, share: 20 },
+      { name: 'M3', value: 400, share: 40 },
+      { name: 'M4', value: 300, share: 30 },
+    ]
+  },
+  {
+    company: 'GreenLiving Co.',
+    industry: 'D2C / Sustainability',
+    result: '2.1M Reach',
+    desc: 'Built social media brand presence from zero with influencer partnerships, UGC campaigns, and community-driven content strategy.',
+    tags: ['Social Media', 'Influencer', 'Content'],
+    img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop',
+    chartData: [
+      { name: 'Organic', value: 600, share: 50 },
+      { name: 'Paid', value: 400, share: 30 },
+      { name: 'Referral', value: 200, share: 20 },
+    ]
+  }
+];
+
+const creativeData = {
+  campaign: [
+    { name: 'Meta', value: 45, share: 45 },
+    { name: 'Google', value: 30, share: 30 },
+    { name: 'LinkedIn', value: 15, share: 15 },
+    { name: 'TikTok', value: 10, share: 10 },
+  ],
+  retention: [
+    { name: 'M1', value: 100 },
+    { name: 'M2', value: 85 },
+    { name: 'M3', value: 72 },
+    { name: 'M4', value: 65 },
+    { name: 'M5', value: 62 },
+    { name: 'M6', value: 60 },
+  ],
+  attribution: [
+    { name: 'First Touch', value: 20 },
+    { name: 'Last Touch', value: 20 },
+    { name: 'Linear', value: 20 },
+    { name: 'Time Decay', value: 20 },
+    { name: 'U-Shaped', value: 20 },
+  ]
+};
+
+const CaseStudyChart = ({ data, color = "#22c55e" }) => {
+  const [type, setType] = useState('line');
+  const COLORS = ['#22c55e', '#166534', '#14532d', '#4ade80', '#86efac'];
+
+  return (
+    <div className="w-full h-40 mt-6 relative group/chart">
+      <div className="absolute -top-12 right-0 flex gap-1.5 opacity-0 group-hover/chart:opacity-100 transition-all duration-300 z-30">
+        <button 
+          onClick={() => setType('line')}
+          className={`p-1.5 rounded-lg border transition-all ${type === 'line' ? 'bg-primary border-primary text-black scale-110 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
+        >
+          <LineChartIcon className="w-3 h-3" />
+        </button>
+        <button 
+          onClick={() => setType('bar')}
+          className={`p-1.5 rounded-lg border transition-all ${type === 'bar' ? 'bg-primary border-primary text-black scale-110 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
+        >
+          <BarChartIcon className="w-3 h-3" />
+        </button>
+        <button 
+          onClick={() => setType('pie')}
+          className={`p-1.5 rounded-lg border transition-all ${type === 'pie' ? 'bg-primary border-primary text-black scale-110 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'}`}
+        >
+          <PieChartIcon className="w-3 h-3" />
+        </button>
+      </div>
+
+      <ResponsiveContainer width="100%" height="100%">
+        {type === 'line' ? (
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+            <XAxis dataKey="name" hide />
+            <YAxis hide />
+            <Tooltip 
+              contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '10px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+              itemStyle={{ color: '#22c55e', fontWeight: '900' }}
+              cursor={{ stroke: 'rgba(34,197,94,0.2)', strokeWidth: 2 }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="value" 
+              stroke={color} 
+              strokeWidth={3} 
+              dot={{ r: 3, fill: color, strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: '#fff', stroke: color, strokeWidth: 2 }}
+              animationDuration={1500}
+            />
+          </LineChart>
+        ) : type === 'bar' ? (
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+            <XAxis dataKey="name" hide />
+            <YAxis hide />
+            <Tooltip 
+              contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '10px' }}
+              itemStyle={{ color: '#22c55e', fontWeight: '900' }}
+            />
+            <Bar dataKey="value" fill={color} radius={[4, 4, 0, 0]} animationDuration={1000} />
+          </BarChart>
+        ) : (
+          <PieChart>
+            <Pie
+              data={data}
+              innerRadius={30}
+              outerRadius={50}
+              paddingAngle={5}
+              dataKey="share"
+              animationDuration={1000}
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip 
+              contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '10px' }}
+            />
+          </PieChart>
+        )}
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default function Portfolio() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const glowX = useSpring(mouseX, { damping: 50, stiffness: 400 });
+  const glowY = useSpring(mouseY, { damping: 50, stiffness: 400 });
+
+  function handleMouseMove({ clientX, clientY, currentTarget }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  const backgroundGlow = useMotionTemplate`radial-gradient(800px circle at ${glowX}px ${glowY}px, rgba(34, 197, 94, 0.18), transparent 80%)`;
+
+  return (
+    <div 
+      className="bg-black pt-32 pb-20 min-h-screen font-sans relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
+      <motion.div 
+        className="pointer-events-none absolute inset-0 z-0 opacity-60"
+        style={{ background: backgroundGlow }}
+      />
+
+      <div className="max-w-7xl mx-auto px-10 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-32"
+        >
+          <div className="inline-block px-4 py-1 bg-primary/10 border border-primary/20 rounded-full mb-8">
+            <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Portfolio</span>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-bold mb-10 tracking-tight">
+            Results That <span className="text-primary italic">Speak Volumes</span>
+          </h1>
+          <p className="text-xl text-white/40 max-w-2xl mx-auto font-medium leading-relaxed">
+            Real campaigns, real numbers, real growth. Explore how we've helped businesses across industries achieve extraordinary marketing results.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {caseStudies.map((study, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ 
+                rotateY: 10, 
+                z: 50,
+                borderColor: "rgba(34,197,94,0.3)",
+                translateY: -10
+              }}
+              className="bg-[#0A0A0A] border border-white/5 p-10 rounded-[32px] transition-all duration-500 group relative perspective-1000 transform-gpu overflow-hidden"
+            >
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
+                <img src={study.img} alt="" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
+              </div>
+              <div className="absolute top-8 right-8 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all relative z-10">
+                <ArrowUpRight className="w-5 h-5 text-primary" />
+              </div>
+              <div className="mb-8 relative z-10">
+                <h3 className="text-2xl font-bold text-white mb-1 uppercase tracking-tight group-hover:text-primary transition-colors">{study.company}</h3>
+                <p className="text-[10px] text-white/30 font-black uppercase tracking-[0.3em]">{study.industry}</p>
+              </div>
+              <div className="mb-10 relative z-10">
+                <motion.span 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  className="text-5xl font-black text-primary tracking-tighter block"
+                >
+                  {study.result}
+                </motion.span>
+                <div className="absolute -bottom-2 left-0 w-12 h-1 bg-primary/30" />
+                <CaseStudyChart data={study.chartData} />
+              </div>
+              <p className="text-sm text-white/50 leading-relaxed font-bold mb-12 h-[80px] relative z-10">
+                {study.desc}
+              </p>
+              <div className="flex flex-wrap gap-2 relative z-10">
+                {study.tags.map(tag => (
+                   <span key={tag} className="px-3 py-1.5 bg-white/5 rounded-lg text-[9px] font-black text-white/30 uppercase tracking-widest border border-white/5">{tag}</span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-40 space-y-40">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+            {[
+              { title: 'Facebook Ads', metric: '₹1,40,000 Spend', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop' },
+              { title: 'Instagram Growth', metric: '₹1,00,000 Spend', img: 'https://images.unsplash.com/photo-1611224885990-ab7363d1f2a9?q=80&w=1000&auto=format&fit=crop' },
+              { title: 'Google Ads PPC', metric: '₹1,10,000 Spend', img: 'https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=1000&auto=format&fit=crop' }
+            ].map((creative, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="aspect-square bg-white/5 rounded-3xl overflow-hidden theme-border relative group"
+              >
+                <img src={creative.img} alt={creative.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex flex-col justify-end p-8">
+                   <span className="text-primary font-black text-[10px] uppercase tracking-widest mb-1">{creative.metric}</span>
+                   <h3 className="text-xl font-bold uppercase tracking-tight text-white">{creative.title}</h3>
+                </div>
+              </motion.div>
+            ))}
+            {[
+              { title: 'Campaign Breakdown', metric: 'Multi-Channel Mix', data: creativeData.campaign },
+              { title: 'Retention Metrics', metric: 'LTV Optimization', data: creativeData.retention },
+              { title: 'Data Attribution', metric: '100% Transparency', data: creativeData.attribution }
+            ].map((creative, i) => (
+              <motion.div 
+                key={i + 3} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: (i + 3) * 0.1 }}
+                className="aspect-square bg-[#050505] rounded-3xl overflow-hidden theme-border p-8 relative group"
+              >
+                <div className="flex flex-col h-full">
+                  <div className="mb-6">
+                     <span className="text-primary font-black text-[10px] uppercase tracking-widest mb-1 block">{creative.metric}</span>
+                     <h3 className="text-xl font-bold uppercase tracking-tight text-white">{creative.title}</h3>
+                  </div>
+                  <div className="flex-1">
+                    <CaseStudyChart data={creative.data} />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="aspect-square bg-white/5 rounded-3xl overflow-hidden theme-border relative group">
+              <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000&auto=format&fit=crop" alt="Corporate Strategy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-12">
+                 <span className="text-primary font-bold text-xs uppercase mb-2">Strategy & Planning</span>
+                 <h3 className="text-3xl font-bold uppercase tracking-tight">Growth Blueprinting</h3>
+                 <p className="text-white/50 mt-2 font-medium">Scalable frameworks for enterprise market entry</p>
+              </div>
+            </div>
+            <div className="aspect-square bg-white/5 rounded-3xl overflow-hidden theme-border relative group">
+              <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?q=80&w=1000&auto=format&fit=crop" alt="Global Reach" className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                 <div className="w-20 h-20 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform cursor-pointer">
+                    <TrendingUp className="w-8 h-8" />
+                 </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-12">
+                 <span className="text-primary font-bold text-xs uppercase mb-2">Market Expansion</span>
+                 <h3 className="text-3xl font-bold uppercase tracking-tight">Global Scale Operations</h3>
+                 <p className="text-white/50 mt-2 font-medium">Expanding reach across 14+ international territories</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-[40px] overflow-hidden theme-border bg-[#050505] p-16 relative group">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 mb-16">
+             <div>
+                <span className="text-primary font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">Central Command</span>
+                <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">Marketing Performance Hub</h3>
+             </div>
+             <div className="flex gap-4">
+                <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center"><BarChart3 className="w-6 h-6 text-primary"/></div>
+                <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center"><TrendingUp className="w-6 h-6 text-primary"/></div>
+             </div>
+          </div>
+          <div className="relative shadow-2xl rounded-3xl overflow-hidden border border-white/10">
+              <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop" alt="Enterprise Analytics Hub" className="w-full grayscale-0 brightness-100" referrerPolicy="no-referrer" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-12">
+                 <div className="space-y-2">
+                    <p className="text-white font-bold italic text-lg max-w-xl">"100% Data Transparency. Real-time attribution. Managed ₹4.8L in revenue with 220% ROI."</p>
+                    <div className="flex gap-4">
+                       <span className="px-3 py-1 bg-primary/20 text-primary text-[10px] font-black rounded-full uppercase tracking-widest">ROI: 220%</span>
+                       <span className="px-3 py-1 bg-white/10 text-white text-[10px] font-black rounded-full uppercase tracking-widest">Conversions: 1,200</span>
+                    </div>
+                 </div>
+              </div>
+          </div>
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-40 text-center border-t border-white/10 pt-20"
+        >
+          <h3 className="text-3xl font-bold mb-6">Want to see more?</h3>
+          <p className="text-white/40 mb-10 max-w-xl mx-auto">We have a catalog of over 25+ success stories across Fintech, EdTech, and D2C. Contact us for a specialized demo.</p>
+          <Link to="/contact" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-green-500 transition-all hover:scale-105">
+            Request Private Deck
+          </Link>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

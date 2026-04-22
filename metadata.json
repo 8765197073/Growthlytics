@@ -1,0 +1,280 @@
+import { motion } from 'motion/react';
+import { ArrowUpRight, BarChart3, Rocket, Zap, Globe, Target, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const revealVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const stats = [
+  { label: 'Avg. ROI Increase', value: '220%' },
+  { label: 'Ads Managed', value: '$12M+' },
+  { label: 'Happy Clients', value: '50+' },
+  { label: 'Conversions Tracked', value: '1.2M+' },
+];
+
+export default function Home() {
+  return (
+    <div className="pt-20 bg-black min-h-screen">
+      {/* Hero Section */}
+      <section className="relative min-h-[95vh] flex items-center px-10 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
+          <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
+        </div>
+
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={revealVariants}
+            >
+              <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-primary/20 rounded-full mb-8">
+                 <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center p-1">
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <path d="M50 10 A40 40 0 1 0 90 50 L75 50 A25 25 0 1 1 50 25 L50 10 Z" fill="#22c55e" />
+                    </svg>
+                 </div>
+                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Growthlytics — Performance Marketing Agency</span>
+              </div>
+              <h1 className="text-6xl md:text-8xl font-bold tracking-tight mb-8 leading-[0.9] uppercase">
+                Young Agency,<br />
+                <span className="text-primary italic">Serious Results</span>
+              </h1>
+              <p className="text-lg md:text-xl text-white/50 mb-12 max-w-xl leading-relaxed font-medium">
+                We launched Growthlytics a year ago with one belief: every business deserves the same marketing firepower as the big guys. No fluff, no long contracts — just sharp strategy, honest reporting, and growth you can see.
+              </p>
+            <div className="flex flex-wrap gap-6">
+              <Link
+                to="/services"
+                className="theme-button-solid"
+              >
+                See What We Do
+              </Link>
+              <Link
+                to="/portfolio"
+                className="px-8 py-4 bg-white/5 border border-white/10 rounded-sm font-bold text-sm tracking-widest transition-all hover:bg-white/10"
+              >
+                Our Work
+              </Link>
+            </div>
+          </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, rotateY: -30, x: 100 }}
+          whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="hidden md:block relative h-[600px]"
+          style={{ perspective: '2000px' }}
+        >
+          <motion.div 
+            whileHover={{ rotateY: 15, rotateX: -10, scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="w-full h-full rounded-3xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(34,197,94,0.3)] relative group transform-gpu"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=1200&auto=format&fit=crop" 
+              alt="Performance Hub" 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black" />
+            <div className="absolute top-10 right-10 bg-black/50 backdrop-blur-md p-4 rounded-xl border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+               <p className="text-[10px] font-bold text-primary uppercase tracking-widest">Live Metrics</p>
+               <div className="text-2xl font-black text-white">+124%</div>
+            </div>
+          </motion.div>
+          
+          {/* Floating 3D Elements */}
+          <motion.div 
+            animate={{ y: [0, -20, 0], rotateZ: [0, 5, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-10 -right-10 w-24 h-24 bg-primary/20 backdrop-blur-xl rounded-2xl border border-primary/30 z-20 flex items-center justify-center shadow-2xl"
+          >
+            <Zap className="text-primary w-10 h-10" />
+          </motion.div>
+          
+          <motion.div 
+            animate={{ y: [0, 15, 0], x: [0, 10, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 z-20 flex items-center justify-center"
+          >
+            <BarChart3 className="text-white/40 w-12 h-12" />
+          </motion.div>
+        </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section with Theme visualization */}
+      <section className="py-32 border-y border-white/10 bg-[#080808]/50">
+        <div className="max-w-7xl mx-auto px-10 grid grid-cols-1 lg:grid-cols-12 gap-20">
+          <div className="lg:col-span-4 space-y-4">
+             <h3 className="text-xs font-bold text-primary uppercase tracking-[0.3em]">Growth Engine v1.0</h3>
+             <p className="text-white/40 text-[10px] uppercase tracking-widest">Real-time performance analytics for modern scale.</p>
+          </div>
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-12 border-l border-white/10 pl-12">
+            {[
+              { label: 'Total Conversions', value: '1,200', width: '72%' },
+              { label: 'Revenue Growth', value: '₹4.8L', width: '94%' },
+              { label: 'Market ROI', value: '220%', width: '85%' },
+            ].map((stat, i) => (
+              <div key={i} className="space-y-4">
+                <div className="flex justify-between text-[11px] font-bold tracking-widest uppercase">
+                  <span>{stat.label}</span>
+                  <span className="text-primary">{stat.value}</span>
+                </div>
+                <div className="w-full h-[1px] bg-white/10">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    whileInView={{ width: stat.width }}
+                    viewport={{ once: true }}
+                    className="bg-primary h-full"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Metrics (from visual) */}
+      <section className="py-20 px-10 bg-white/[0.01] border-y border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { label: 'Total Ad Spend', value: '₹1,50,000', icon: <ArrowUpRight className="text-primary" /> },
+              { label: 'Total Revenue', value: '₹4,80,000', icon: <BarChart3 className="text-primary" /> },
+              { label: 'Total Conversions', value: '1,200', icon: <Target className="text-primary" /> },
+              { label: 'ROI (Performance)', value: '220%', icon: <Zap className="text-primary" /> },
+            ].map((m, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ y: -5 }}
+                className="p-8 theme-border rounded-2xl bg-black/40"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{m.label}</span>
+                  {m.icon}
+                </div>
+                <div className="text-3xl font-black text-white">{m.value}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Performance Hub Preview Section */}
+      <section className="py-20 px-10 border-t border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+            <div className="lg:col-span-12">
+                <div className="group relative rounded-[20px] overflow-hidden theme-border aspect-[21/9] bg-[#050505]">
+                  <img 
+                    src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2000&auto=format&fit=crop" 
+                    alt="Performance Hub Dashboard" 
+                    className="w-full h-full object-cover transition-all duration-1000 opacity-60 group-hover:opacity-100"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex items-end p-12">
+                    <div>
+                      <h3 className="text-3xl font-black uppercase tracking-tighter mb-2">The Performance Hub</h3>
+                      <p className="text-white/50 font-medium max-w-xl">Our proprietary analytics engine providing 100% transparency into every dollar spent. Built for Year One. Built for scaling.</p>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+       {/* Bottom Features Pattern */}
+       <section className="py-20 px-10">
+         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[
+              { 
+                id: '/01', 
+                title: 'AUTOMATION', 
+                desc: 'Custom workflows that save hundreds of hours monthly.',
+                img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop'
+              },
+              { 
+                id: '/02', 
+                title: 'PERFORMANCE', 
+                desc: 'ROAS-focused campaigns for direct-to-consumer scale.',
+                img: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=600&auto=format&fit=crop'
+              },
+              { 
+                id: '/03', 
+                title: 'RETENTION', 
+                desc: 'Data-driven CRM and loyalty systems to maximize LTV.',
+                img: 'https://images.unsplash.com/photo-1556761175-5973cd0f6220?q=80&w=600&auto=format&fit=crop'
+              },
+              { 
+                id: '/04', 
+                title: 'INSIGHTS', 
+                desc: 'Real-time dashboards providing 100% data transparency.',
+                img: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=600&auto=format&fit=crop'
+              },
+            ].map((feature, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-[#0A0A0A] border border-white/5 p-8 rounded-sm hover:border-primary/30 transition-all group relative overflow-hidden"
+              >
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
+                  <img src={feature.img} className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" alt="" />
+                </div>
+                <div className="relative z-10">
+                  <span className="text-primary text-xs font-bold mb-4 block tracking-widest">{feature.id} {feature.title}</span>
+                  <p className="text-xs text-white/50 leading-relaxed font-medium group-hover:text-white transition-colors">{feature.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+         </div>
+       </section>
+
+      {/* Brand Growth Impact (Generic Labels) */}
+      <section className="py-32 border-t border-white/10 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-primary/5 rounded-full blur-[120px] -z-10" />
+        <div className="max-w-7xl mx-auto px-10">
+          <div className="text-center mb-16">
+            <h3 className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-4">Market Presence</h3>
+            <p className="text-3xl font-black uppercase tracking-tighter text-white">Trust Across Scales</p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+            <div className="text-center space-y-2 group">
+              <div className="text-xl font-black tracking-widest uppercase text-white group-hover:text-primary transition-colors">Global Retail</div>
+              <div className="text-[10px] font-bold text-white/30 uppercase">+140% ROAS</div>
+            </div>
+            <div className="text-center space-y-2 group">
+              <div className="text-xl font-bold italic tracking-tighter text-white group-hover:text-primary transition-colors">Telecom Giant</div>
+              <div className="text-[10px] font-bold text-white/30 uppercase">4.8x Efficiency</div>
+            </div>
+            <div className="text-center space-y-2 group">
+              <div className="text-xl font-black uppercase tracking-[0.2em] text-white group-hover:text-primary transition-colors">Fintech Leader</div>
+              <div className="text-[10px] font-bold text-white/30 uppercase">₹12.4M Managed</div>
+            </div>
+            <div className="text-center space-y-2 group">
+              <div className="text-xl font-serif italic text-white group-hover:text-primary transition-colors">Beauty Brand</div>
+              <div className="text-[10px] font-bold text-white/30 uppercase">1.2M Conversions</div>
+            </div>
+            <div className="text-center space-y-2 group">
+              <div className="text-xl font-bold border border-white/40 px-4 py-1 text-white group-hover:text-primary group-hover:border-primary transition-all">Automotive</div>
+              <div className="text-[10px] font-bold text-white/30 uppercase">-45% CPA</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
